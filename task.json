@@ -1,0 +1,109 @@
+{
+  "id": "2f321c10-7d4d-46d1-b3a1-f78cc01b8a7c",
+  "name": "RemoteEnvVar",
+  "friendlyName": "Windows Remote EnvVar",
+  "description": "Remotely manage windows environment variables.",
+  "author": "cnatan",
+  "helpMarkDown": "Remotely manage windows environment variables through WinRM.",
+  "category": "Utility",
+  "visibility": [
+    "Build",
+    "Release"
+  ],
+  "demands": [],
+  "version": {
+    "Major": "1",
+    "Minor": "0",
+    "Patch": "0"
+  },
+  "minimumAgentVersion": "1.95.0",
+  "instanceNameFormat": "Remote EnvVar $(message)",
+  "groups":[
+    {
+      "name" : "remoteExecution",
+      "displayName": "Remote Execution Options",
+      "isExpanded": false
+    }
+  ],
+  "inputs": [
+    {
+      "name": "environment",
+      "type": "multiline",
+      "label": "Environment Variables",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Insert one entry per line. VAR=VALUE"
+    },
+    {
+      "name": "level",
+      "type": "pickList",
+      "label": "Environment variable level",
+      "helpMarkDown": "Environment variable level. The user level is set to the user used in the remote connection.",
+      "defaultValue": "User",
+      "required": true,
+      "options": {
+        "User": "User",
+        "Machine": "Machine"
+      },
+      "properties": {
+        "EditableOptions": "false",
+        "PopulateDefaultValue": "true"
+      }
+    },
+    {
+      "name": "Machine",
+      "type": "string",
+      "label": "Machine",
+      "defaultValue": "",
+      "required": true,
+      "groupName": "remoteExecution",
+      "helpMarkDown": "Target machine IP or FQDN."
+    },
+    {
+      "name": "AdminUserName",
+      "type": "string",
+      "label": "Admin Login",
+      "defaultValue": "",
+      "required": true,
+      "groupName": "remoteExecution",
+      "helpMarkDown": "Administrator login for the target machine."
+    },
+    {
+      "name": "AdminPassword",
+      "type": "string",
+      "label": "Password",
+      "defaultValue": "",
+      "required": true,
+      "groupName": "remoteExecution",
+      "helpMarkDown": "Administrator password for the target machine. <br>It can accept variable defined in Build/Release definitions as '$(passwordVariable)'. <br>You may mark variable type as 'secret' to secure it."
+    },
+    { 
+      "name": "Protocol",
+      "type": "radio",
+      "label": "Protocol",
+      "required": true,
+      "defaultValue": "",
+      "groupName": "remoteExecution",
+      "options": {
+          "Http": "HTTP",
+          "Https": "HTTPS"
+      },
+      "helpMarkDown": "Select the protocol to use for the WinRM connection with the machine(s). Default is HTTPS."
+    },
+    {
+      "name": "TestCertificate",
+      "type": "boolean",
+      "label": "Test Certificate",
+      "defaultValue": "true",
+      "visibleRule": "Protocol = Https",
+      "required": false,
+      "groupName": "remoteExecution",
+      "helpMarkDown": "Select the option to skip validating the authenticity of the machine's certificate by a trusted certification authority. The parameter is required for the WinRM HTTPS protocol."
+    }
+  ],
+  "execution": {
+    "PowerShell3": {
+      "target": "RemoteEnvVar.ps1"
+    }
+  }
+}
