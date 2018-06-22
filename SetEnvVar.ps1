@@ -60,7 +60,7 @@ function Main () {
                             [Environment]::SetEnvironmentVariable($varName, $varValue, $level)
                         }
                     }else{
-                        [Environment]::SetEnvironmentVariable($varName, $varValue, $level)
+                        [Environment]::SetEnvironmentVariable($varName, $varValue, $environmentVarLevel)
                     }
                 }else{
                     Write-Host "Invalid format for var $_."
