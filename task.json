@@ -1,10 +1,10 @@
 {
   "id": "2f321c10-7d4d-46d1-b3a1-f78cc01b8a7c",
-  "name": "RemoteEnvVar",
-  "friendlyName": "Windows Remote EnvVar",
-  "description": "Remotely manage windows environment variables.",
+  "name": "WindowsSetEnvVar",
+  "friendlyName": "Windows Set EnvVar",
+  "description": "Sets windows environment variables.",
   "author": "cnatan",
-  "helpMarkDown": "Remotely manage windows environment variables through WinRM.",
+  "helpMarkDown": "Manage windows environment variables through WinRM or locally in deployment groups.",
   "category": "Utility",
   "visibility": [
     "Build",
@@ -12,17 +12,18 @@
   ],
   "demands": [],
   "version": {
-    "Major": "1",
+    "Major": "2",
     "Minor": "0",
-    "Patch": "0"
+    "Patch": "1"
   },
   "minimumAgentVersion": "1.95.0",
-  "instanceNameFormat": "Remote EnvVar $(message)",
+  "instanceNameFormat": "Set Windows EnvVar",
   "groups":[
     {
       "name" : "remoteExecution",
       "displayName": "Remote Execution Options",
-      "isExpanded": false
+      "isExpanded": true,
+      "visibleRule": "ConnectionType = Remote"
     }
   ],
   "inputs": [
@@ -32,7 +33,7 @@
       "label": "Environment Variables",
       "defaultValue": "",
       "required": true,
-      "helpMarkDown": "Insert one entry per line. VAR=VALUE"
+      "helpMarkDown": "Insert one entry per line. Each line must be in the VAR=VALUE format"
     },
     {
       "name": "level",
@@ -48,6 +49,16 @@
       "properties": {
         "EditableOptions": "false",
         "PopulateDefaultValue": "true"
+      }
+    },
+    {
+      "name": "ConnectionType",
+      "type": "radio",
+      "label": "Connection Type",
+      "defaultValue": "DeploymentGroup",
+      "options": {
+        "DeploymentGroup": "Deployment Group (Local)",
+        "Remote": "Remote Target"
       }
     },
     {
@@ -103,7 +114,7 @@
   ],
   "execution": {
     "PowerShell3": {
-      "target": "RemoteEnvVar.ps1"
+      "target": "SetEnvVar.ps1"
     }
   }
 }
