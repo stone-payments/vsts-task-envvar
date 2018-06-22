@@ -3,7 +3,7 @@
   "name": "WindowsSetEnvVar",
   "friendlyName": "Windows Set EnvVar",
   "description": "Sets windows environment variables.",
-  "author": "cnatan",
+  "author": "stoneco",
   "helpMarkDown": "Manage windows environment variables through WinRM or locally in deployment groups.",
   "category": "Utility",
   "visibility": [
@@ -14,7 +14,7 @@
   "version": {
     "Major": "2",
     "Minor": "0",
-    "Patch": "1"
+    "Patch": "2"
   },
   "minimumAgentVersion": "1.95.0",
   "instanceNameFormat": "Set Windows EnvVar",
