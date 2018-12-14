@@ -33,10 +33,15 @@ function Main () {
     try {
 
         # Open winrm session.
-        $remoteSession = Get-PSSession
+        
 
         $environmentVariables = Get-VstsInput -Name "environment" -Require
         $environmentVarLevel = Get-VstsInput -Name "level" -Require
+        $connectionType = Get-VstsInput -Name "ConnectionType" -Require
+
+        if($connectionType -eq "Remote"){
+            $remoteSession = Get-PSSession
+        }
 
         if($environmentVariables){
             $environmentVariables -split "`n"| ForEach-Object {
@@ -49,9 +54,13 @@ function Main () {
                     }
 
                     Write-Host "##[command] Name: $varName Value: $varValue Level: $environmentVarLevel"
-                    Invoke-Command -Session $remoteSession -ArgumentList $varName, $varValue, $environmentVarLevel {
-                        param($varName, $varValue, $level)
-                        [Environment]::SetEnvironmentVariable($varName, $varValue, $level)
+                    if($connectionType -eq "Remote"){
+                        Invoke-Command -Session $remoteSession -ArgumentList $varName, $varValue, $environmentVarLevel {
+                            param($varName, $varValue, $level)
+                            [Environment]::SetEnvironmentVariable($varName, $varValue, $level)
+                        }
+                    }else{
+                        [Environment]::SetEnvironmentVariable($varName, $varValue, $environmentVarLevel)
                     }
                 }else{
                     Write-Host "Invalid format for var $_."
